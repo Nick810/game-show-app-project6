@@ -32,39 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-  function resetGame() {
-    const message = document.createElement('h1');
-    const letter = ul.getElementsByTagName('li');
-    const keyboard = document.querySelectorAll('.chosen');
-    const ol = scoreboard.firstElementChild;
-    const orderedList = document.createElement('ol');
-
-    message.textContent = `You ${overlay.className}!`.toUpperCase();
-    startButton.textContent = 'Try Again';
-    overlay.appendChild(message);
-    missed = 0;
-    while (letter.length >= 1) {
-      ul.removeChild(ul.firstChild);
-    }
-    for (let i = 0; i < keyboard.length; i++) {
-      keyboard[i].disabled = false;
-      keyboard[i].removeAttribute('class');
-    }
-    scoreboard.removeChild(ol);
-    scoreboard.appendChild(orderedList);
-    for (let i = 0; i < 5; i++) {
-      const li = document.createElement('li');
-      const image = document.createElement('img');
-      li.className = 'tries';
-      li.style.margin = '0 2px';
-      image.src = 'images/liveHeart.png';
-      image.style.height = '35px';
-      image.style.width = '30px';
-      li.appendChild(image);
-      orderedList.appendChild(li);
-    }
-  }
-
   startButton.addEventListener('click', () => {
     const phraseArray = getRandomPhraseAsArray(phrases);
     overlay.removeChild(overlay.lastChild);
@@ -73,6 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   qwerty.addEventListener('click', (e) => {
+    const ol = scoreboard.firstElementChild;
+    const letter = document.querySelectorAll('.letter');
+
     let letterFound = null;
     if (e.target.tagName === 'BUTTON') {
       const button = e.target;
@@ -80,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
       button.disabled = true;
 
     function checkLetter(button) {
-      const letter = document.querySelectorAll('.letter');
       const classShow = document.querySelectorAll('.show')
       for (let i = 0; i < letter.length; i++) {
         if (button.textContent === letter[i].textContent) {
@@ -94,10 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkWin() {
       const message = document.createElement('h1');
-      const classLetter = document.querySelectorAll('.letter');
       const classShow = document.querySelectorAll('.show')
 
-      if (classShow.length === classLetter.length) {
+      if (classShow.length === letter.length) {
         overlay.className = 'win';
         overlay.style.display = 'flex';
         return resetGame();
@@ -108,10 +76,41 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    function resetGame() {
+      const message = document.createElement('h1');
+      const letterList = ul.getElementsByTagName('li');
+      const keyboard = document.querySelectorAll('.chosen');
+      const orderedList = document.createElement('ol');
+
+      message.textContent = `You ${overlay.className}!`.toUpperCase();
+      startButton.textContent = 'Try Again';
+      overlay.appendChild(message);
+      missed = 0;
+      while (letterList.length >= 1) {
+        ul.removeChild(ul.firstChild);
+      }
+      for (let i = 0; i < keyboard.length; i++) {
+        keyboard[i].disabled = false;
+        keyboard[i].removeAttribute('class');
+      }
+      scoreboard.removeChild(ol);
+      scoreboard.appendChild(orderedList);
+      for (let i = 0; i < 5; i++) {
+        const li = document.createElement('li');
+        const image = document.createElement('img');
+        li.className = 'tries';
+        li.style.margin = '0 2px';
+        image.src = 'images/liveHeart.png';
+        image.style.height = '35px';
+        image.style.width = '30px';
+        li.appendChild(image);
+        orderedList.appendChild(li);
+      }
+    }
+
     checkLetter(button);
 
     if (letterFound === null) {
-      const ol = scoreboard.firstElementChild;
       const li = document.createElement('li');
       const lostHeart = document.createElement('img');
       const tries = document.getElementsByClassName('tries')[0];
