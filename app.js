@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         li.appendChild(image);
         orderedList.appendChild(li);
       }
+      return;
     }
 
     checkLetter(button);
